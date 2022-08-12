@@ -37,6 +37,7 @@ public class EduTeacherController {
     @GetMapping("findAll")
     public ResponseResult findAllTeacher() {
         // 调用service的方法实现查询所有的操作
+        // int i = 1 / 0;// 手动添加的异常
         List<EduTeacher> list = eduTeacherService.list(null);
         return ResponseResult.ok().data("items", list);
     }
@@ -69,13 +70,13 @@ public class EduTeacherController {
     }
 
     // 4.条件查询带分页的方法
-    @GetMapping("pageTeacherCondition/{current}/{limit}")
+    @PostMapping("pageTeacherCondition/{current}/{limit}")
     @ApiOperation("带条件的分页查询")
     public ResponseResult pageTeacherCondition(@PathVariable long current,
                                                @PathVariable long limit,
-                                               TeacherQuery teacherQuery) {
+                                               @RequestBody(required = false) TeacherQuery teacherQuery) {
         // 创建page对象
-        Page<EduTeacher> teacherPage = new Page<>(current,limit);
+        Page<EduTeacher> teacherPage = new Page<>(current, limit);
         QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
         // 多条件组合查询
         // mybatis 学过动态sql
@@ -105,6 +106,36 @@ public class EduTeacherController {
         List<EduTeacher> records = teacherPage.getRecords();// 数据list集合
 
         return ResponseResult.ok().data("total", total).data("records", records);
+    }
+
+    //添加讲师接口的方法
+    @PostMapping("addTeacher")
+    @ApiOperation("添加讲师")
+    public ResponseResult addTeacher(@RequestBody EduTeacher eduTeacher) {
+        boolean save = eduTeacherService.save(eduTeacher);
+        if (save) {
+            return ResponseResult.ok();
+        } else {
+            return ResponseResult.error();
+        }
+    }
+
+    @GetMapping("getTeacher/{id}")
+    @ApiOperation("查询单个讲师")
+    public ResponseResult getTeacher(@PathVariable String id) {
+        EduTeacher teacher = eduTeacherService.getById(id);
+        return ResponseResult.ok().data("teacher", teacher);
+    }
+
+    @PostMapping("updateTeacher")
+    @ApiOperation("修改讲师")
+    public ResponseResult updateTeacher(@RequestBody EduTeacher eduTeacher) {
+        boolean update = eduTeacherService.updateById(eduTeacher);
+        if (update) {
+            return ResponseResult.ok();
+        } else {
+            return ResponseResult.error();
+        }
     }
 
 }
