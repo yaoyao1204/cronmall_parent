@@ -7,6 +7,7 @@ import com.study.commonutils.ResponseResult;
 import com.study.eduservice.controller.vo.TeacherQuery;
 import com.study.eduservice.entity.EduTeacher;
 import com.study.eduservice.service.EduTeacherService;
+import com.study.servicebase.exceptionhandler.CromMallException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -37,7 +38,12 @@ public class EduTeacherController {
     @GetMapping("findAll")
     public ResponseResult findAllTeacher() {
         // 调用service的方法实现查询所有的操作
-        // int i = 1 / 0;// 手动添加的异常
+        try {
+            int i = 1 / 0;// 手动添加的异常
+        } catch (Exception e) {
+            // 执行自定义异常
+            throw new CromMallException(20001, "执行了自定义异常的写法。。。");
+        }
         List<EduTeacher> list = eduTeacherService.list(null);
         return ResponseResult.ok().data("items", list);
     }

@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * @ClassName:MyMetaObjectHandler
- * @Auther: YooAo
+ * @Auther: yao
  * @Description: 实现接口自动填充
  * @Date: 2022/8/12 23:38
  * @Version: v1.0
