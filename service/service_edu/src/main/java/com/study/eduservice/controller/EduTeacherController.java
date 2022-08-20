@@ -28,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/eduservice/teacher")
 @Api(description = "讲师管理")
+@CrossOrigin
 public class EduTeacherController {
     // 把service注入
     @Autowired
@@ -103,7 +104,7 @@ public class EduTeacherController {
         if (!StringUtils.isEmpty(end)) {
             wrapper.lt("gmt_create", end);
         }
-
+        wrapper.orderByDesc("gmt_create");
         eduTeacherService.page(teacherPage, wrapper);
 
         // 调用方法实现分页
