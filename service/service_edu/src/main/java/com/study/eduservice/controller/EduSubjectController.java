@@ -2,14 +2,14 @@ package com.study.eduservice.controller;
 
 
 import com.study.commonutils.ResponseResult;
+import com.study.eduservice.entity.subject.OneSubject;
 import com.study.eduservice.service.EduSubjectService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -29,6 +29,7 @@ public class EduSubjectController {
 
     // 添加课程分类
     // 获取到上传过来的文件，把文件内容读取出来
+    @ApiOperation("添加课程分类")
     @PostMapping("addSubject")
     public ResponseResult addSubject(MultipartFile file) {
         // 上传过来excel文件
@@ -36,6 +37,15 @@ public class EduSubjectController {
         eduSubjectService.saveSubject(file, eduSubjectService);
         return ResponseResult.ok();
     }
+
+    // 课程分类列表
+    @ApiOperation("获取课程分类列表")
+    @GetMapping("getSubject")
+    public ResponseResult getSubject() {
+        List<OneSubject> list = eduSubjectService.getAllSubject();
+        return ResponseResult.ok().data("list", list);
+    }
+
 
 }
 

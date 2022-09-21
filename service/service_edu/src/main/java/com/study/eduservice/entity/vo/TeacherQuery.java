@@ -1,4 +1,4 @@
-package com.study.eduservice.controller.vo;
+package com.study.eduservice.entity.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
