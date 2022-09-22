@@ -7,8 +7,10 @@ import com.study.eduservice.entity.EduCourseDescription;
 import com.study.eduservice.entity.vo.CourseInfoVo;
 import com.study.eduservice.entity.vo.CoursePublishVo;
 import com.study.eduservice.mapper.EduCourseMapper;
+import com.study.eduservice.service.EduChapterService;
 import com.study.eduservice.service.EduCourseDescriptionService;
 import com.study.eduservice.service.EduCourseService;
+import com.study.eduservice.service.EduVideoService;
 import com.study.servicebase.exceptionhandler.CromMallException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Resource
     private EduCourseDescriptionService courseDescriptionService;
+    @Resource
+    private EduVideoService videoService;
+    @Resource
+    private EduChapterService chapterService;
 
     @Override
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
@@ -82,6 +88,22 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Override
     public CoursePublishVo publishCourseInfo(String id) {
         return baseMapper.getPublishCourseInfo(id);
+    }
+
+    @Override
+    public void removeCourse(String courseId) {
+        // 删除小节信息
+        videoService.removeVideoByCourseId(courseId);
+        // 删除章节信息
+        chapterService.removeChapterService(courseId);
+        // 删除描述
+        courseDescriptionService.removeById(courseId);
+        // 删除课程信息
+        int i = baseMapper.deleteById(courseId);
+        if (i == 0) {
+            throw new CromMallException(20001, "删除失败");
+        }
+
     }
 
 }

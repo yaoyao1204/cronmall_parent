@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -27,6 +28,13 @@ import javax.annotation.Resource;
 public class EduCourseController {
     @Resource
     private EduCourseService courseService;
+
+    // 课程列表 基本实现
+    @GetMapping("getCourseList")
+    public ResponseResult getCourseList() {
+        List<EduCourse> list = courseService.list(null);
+        return ResponseResult.ok().data("list", list);
+    }
 
     // 添加课程基本信息的方法
     @PostMapping("addCourseInfo")
@@ -65,6 +73,13 @@ public class EduCourseController {
         course.setId(id);
         course.setStatus("Normal");// 设置课程发布的状态
         courseService.updateById(course);
+        return ResponseResult.ok();
+    }
+
+    // 删除课程
+    @DeleteMapping("deleteCourse/{courseId}")
+    public ResponseResult deleteCourse(@PathVariable String courseId){
+        courseService.removeCourse(courseId);
         return ResponseResult.ok();
     }
 
