@@ -3,6 +3,8 @@ package com.study.vod.service;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @ClassName:VodService
  * @Auther: yao
@@ -13,4 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface VodService {
     String uploadVideo(MultipartFile file);
+
+    void removeMoreAlyVideo(List videoIdList);
 }

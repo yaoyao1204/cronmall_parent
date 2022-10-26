@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @ClassName:VodController
@@ -52,6 +53,13 @@ public class VodController {
             e.printStackTrace();
             throw new CromMallException(20001, "删除视频失败");
         }
+    }
+
+    // 删除多个阿里云视频的方法
+    @DeleteMapping("delete-batch")
+    public ResponseResult deleteBatch(@RequestParam("videoIdList") List<String> videoIdList) {
+        vodService.removeMoreAlyVideo(videoIdList);
+        return ResponseResult.ok();
     }
 
 

@@ -2,6 +2,7 @@ package com.study.eduservice.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Strings;
+import com.mysql.cj.util.StringUtils;
 import com.study.eduservice.entity.EduCourse;
 import com.study.eduservice.entity.EduCourseDescription;
 import com.study.eduservice.entity.vo.CourseInfoVo;
@@ -42,6 +43,9 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         BeanUtils.copyProperties(courseInfoVo, eduCourse);
         if (Strings.isNullOrEmpty(eduCourse.getSubjectParentId())) {
             eduCourse.setSubjectParentId("");
+        }
+        if (StringUtils.isNullOrEmpty(courseInfoVo.getCover())) {
+            eduCourse.setCover("");
         }
         int insert = baseMapper.insert(eduCourse);
         if (insert == 0) {
