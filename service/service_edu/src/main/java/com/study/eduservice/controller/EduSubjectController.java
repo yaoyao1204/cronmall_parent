@@ -46,6 +46,15 @@ public class EduSubjectController {
         return ResponseResult.ok().data("list", list);
     }
 
+    @ApiOperation("获取课程分类列表")
+    @GetMapping("test1")
+//    @tdtZ(va="huaoqu",vb="213")
+    public ResponseResult test1(@RequestBody OneSubject bo) {
+        Boolean list = eduSubjectService.saveOneSubject(bo);
+        return ResponseResult.ok();
+    }
+
+
 
 }
 

@@ -1,12 +1,17 @@
 package com.study.eduservice.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.study.eduservice.entity.EduSubject;
 import com.study.eduservice.entity.subject.OneSubject;
 import com.study.eduservice.entity.subject.TwoSubject;
 import com.study.eduservice.entity.excel.SubjectData;
+import com.study.eduservice.entity.subject.TwoSubjectSaveDto;
 import com.study.eduservice.listener.SubjectExcelListener;
 import com.study.eduservice.mapper.EduSubjectMapper;
 import com.study.eduservice.service.EduSubjectService;
@@ -18,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -29,6 +35,9 @@ import java.util.List;
  */
 @Service
 public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubject> implements EduSubjectService {
+
+
+
 
     // 添加课程分类
     @Override
@@ -82,6 +91,39 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
 
         return finalSubjectList;
     }
+
+    @Override
+    public Boolean saveOneSubject(OneSubject bo) {
+        //连续点点击 redis 控制
+        //  redis.get(id)
+        //重复炒作
+        String id = bo.getId();
+        // redis.set()
+
+
+        //mysql 控制唯一数据查询表
+        //select * id
+        if (CollUtil.isNotEmpty(bo.getChildren())) {
+            return false;
+        }
+
+
+
+        List<TwoSubjectSaveDto> list = bo.getChildren().stream()
+                .filter(data -> data.getId() != null)
+                .map(data -> {
+                    TwoSubjectSaveDto dto = new TwoSubjectSaveDto();
+                    BeanUtil.copyProperties(data, dto);
+                    dto.setTitle2(bo.getId());
+                    dto.setTitle3(bo.getTitle());
+                    return dto;
+                }).collect(Collectors.toList());
+
+        Lists.partition(list,1000);
+
+        return null;
+    }
+
 
 
 }

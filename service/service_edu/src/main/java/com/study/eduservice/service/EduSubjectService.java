@@ -21,4 +21,11 @@ public interface EduSubjectService extends IService<EduSubject> {
     void saveSubject(MultipartFile file, EduSubjectService subjectService);
 
     List<OneSubject> getAllSubject();
+
+    /**
+     * 保存测试
+     * @param bo 前端传参
+     * @return
+     */
+    Boolean saveOneSubject(OneSubject bo);
 }
