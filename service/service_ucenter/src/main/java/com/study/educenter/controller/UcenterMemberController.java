@@ -3,9 +3,11 @@ package com.study.educenter.controller;
 
 import com.study.commonutils.JwtUtils;
 import com.study.commonutils.ResponseResult;
+import com.study.commonutils.ordervo.UcenterMemberOrder;
 import com.study.educenter.entity.UcenterMember;
 import com.study.educenter.entity.vo.RegisterVo;
 import com.study.educenter.service.UcenterMemberService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +52,15 @@ public class UcenterMemberController {
         // 查询数据库，根据用户id获取用户信息
         UcenterMember member = memberService.getById(memberId);
         return ResponseResult.ok().data("userInfo", member);
+    }
+
+    // 根据用户id获取用户信息
+    @GetMapping("getMemberInfoById/{id}")
+    public UcenterMemberOrder getMemberInfoById(@PathVariable String id) {
+        UcenterMember member = memberService.getById(id);
+        UcenterMemberOrder ucenterMemberOrder = new UcenterMemberOrder();
+        BeanUtils.copyProperties(member, ucenterMemberOrder);
+        return ucenterMemberOrder;
     }
 
 }

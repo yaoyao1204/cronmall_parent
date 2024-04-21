@@ -1,17 +1,21 @@
-package com.study.educenter;
+package com.yao.eduorder;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@EnableDiscoveryClient
-@ComponentScan(basePackages = {"com.study"})//扫描到包名下的文件
-@MapperScan("com.study.educenter.mapper")
-public class UcenterApplication {
+@EnableFeignClients
+@ComponentScan(basePackages = {"com.yao"})
+@EnableDiscoveryClient//做远程调用
+@MapperScan("com.yao.eduorder.mapper")
+public class ServiceOrderApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(UcenterApplication.class, args);
+        SpringApplication.run(ServiceOrderApplication.class, args);
     }
+
 }
